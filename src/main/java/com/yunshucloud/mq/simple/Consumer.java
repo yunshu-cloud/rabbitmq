@@ -1,13 +1,22 @@
 package com.yunshucloud.mq.simple;
 import com.rabbitmq.client.*;
-import com.yunshucloud.util.RabbitmqUtils;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 // 消费者
 public class Consumer {
     public static void main(String[] args) throws IOException, TimeoutException {
-        Channel channel = RabbitmqUtils.createChannel();
+        // 1.创建连接工厂
+        ConnectionFactory connectionFactory = new ConnectionFactory();
+        connectionFactory.setHost("121.43.236.238");
+        connectionFactory.setPort(5672);
+        connectionFactory.setUsername("guest");
+        connectionFactory.setPassword("guest");
+        connectionFactory.setVirtualHost("/");
+        // 2.创建连接
+        Connection connection = connectionFactory.newConnection();
+        // 3.建立信道
+        Channel channel = connection.createChannel();
         // 4.监听队列
         /**
          * 参数1：监听的队列名

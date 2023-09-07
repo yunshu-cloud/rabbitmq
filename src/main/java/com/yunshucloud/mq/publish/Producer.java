@@ -1,4 +1,4 @@
-package com.yunshucloud.publish;
+package com.yunshucloud.mq.publish;
 import com.rabbitmq.client.*;
 
 import java.io.IOException;
