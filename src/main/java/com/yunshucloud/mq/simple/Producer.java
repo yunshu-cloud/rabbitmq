@@ -1,8 +1,9 @@
 package com.yunshucloud.mq.simple;
 
 import com.rabbitmq.client.Channel;
+
 import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
+import com.yunshucloud.util.RabbitmqUtils;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -10,17 +11,8 @@ import java.util.concurrent.TimeoutException;
 // 生产者
 public class Producer {
     public static void main(String[] args) throws IOException, TimeoutException {
-        // 1.创建连接工厂
-        ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("121.43.236.238");
-        connectionFactory.setPort(5672);
-        connectionFactory.setUsername("guest");
-        connectionFactory.setPassword("guest");
-        connectionFactory.setVirtualHost("/");
-        // 2.创建连接
-        Connection connection = connectionFactory.newConnection();
-        // 3.建立信道
-        Channel channel = connection.createChannel();
+
+        Channel channel = RabbitmqUtils.createChannel();
         // 4.创建队列，如果队列已存在，则使用该队列
         /**
          * 参数1：队列名
@@ -39,6 +31,7 @@ public class Producer {
          * 参数4：要传递的消息字节数组
          */
         channel.basicPublish("","simple_queue",null,message.getBytes());
+        Connection connection = channel.getConnection();
         // 6.关闭信道和连接
         channel.close();
         connection.close();
